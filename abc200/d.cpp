@@ -1,8 +1,50 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
+const ll mod = 200;
+
 int main(void){
-   
+   ll n;
+   cin >> n;
+   vector<ll> a(n);
+   rep(i,n) {
+      cin >> a[i];
+      a[i] %= mod;
+   }
+   n = min(8LL, n);
+
+   vector<vector<ll>> b(201, vector<ll>(0));
+   for(ll bit = 0; bit < (1LL << n); bit++) {
+      vector<ll> res;
+      ll cnt = 0;
+      rep(i,n) {
+         if((bit & (1LL << i)) == 0) continue;
+         res.emplace_back(i);
+         cnt += a[i];
+         cnt %= mod;
+      }
+
+      if(res.empty()) continue;
+      if(b[cnt].empty()) {
+         b[cnt] = res;
+         continue;
+      }
+
+      cout << "Yes" << '\n';
+
+      cout << b[cnt].size() << ' ';
+      for(auto &nb : b[cnt]) cout << nb+1 << ' ';
+      cout << '\n';
+
+      cout << res.size() << ' ';
+      for(auto &nr : res) cout << nr+1 << ' ';
+      cout << '\n';
+
+      return 0; 
+   }
+
+   cout << "No" << '\n';
+   return 0;
 }
 
 /*---------------------------------------------------------------------------------------------------
