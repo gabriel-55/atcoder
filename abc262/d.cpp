@@ -8,8 +8,32 @@ int main(void){
    cin >> n;
    vector<ll> a(n);
    rep(i,n) cin >> a[i];
-   
-   
+
+   ll ans = 0;
+   REP(d,1,n+1) {
+      vector dp(d+1, vector<ll>(d+1, 0));
+      dp[0][0] = 1;
+      rep(i,n) {
+         vector p(d+1, vector<ll>(d+1, 0));
+         swap(dp, p);
+
+         rep(j,d+1) rep(k,d+1) {
+            dp[j][k] += p[j][k];
+            dp[j][k] %= mod;
+            
+            if(j+1 <= d) {
+               dp[j+1][(k+a[i])%d] += p[j][k];
+               dp[j+1][(k+a[i])%d] %= mod;
+            }
+         }
+      }
+
+      ans += dp[d][0];
+      ans %= mod;
+   }
+
+   cout << ans << '\n';
+   return 0;
 }
 
 /*---------------------------------------------------------------------------------------------------
