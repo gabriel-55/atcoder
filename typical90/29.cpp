@@ -1,29 +1,24 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
+ll op (ll a, ll b) {return max(a, b);}
+ll e() {return 0;}
+ll mapping(ll f, ll x) {return max(f, x);}
+ll composition(ll f, ll g) {return max(f, g);}
+ll id() {return 0;}
+
 int main(void){
    ll w, n;
    cin >> w >> n;
-   vector<ll> l(n), r(n);
-   vector<ll> m;
-   rep(i,n) {
-      cin >> l[i] >> r[i];
-      m.emplace_back(l[i]);
-      m.emplace_back(r[i]);
-   }
-   sort(m.begin(),m.end());
-   m.erase(unique(m.begin(), m.end()), m.end());
-   vector<ll> p(m.size(), 0);
 
+   lazy_segtree<ll, op, e, ll, mapping, composition, id> seg(w);
    rep(i,n) {
-      l[i] = lower_bound(m.begin(), m.end(), l[i]) - m.begin();
-      r[i] = lower_bound(m.begin(), m.end(), r[i]) - m.begin();
-
-      ll mx = 0;
-      for(ll j = l[i]; j <= r[i]; j++) chmax(mx, p[j]);
-      mx++;
-      for(ll j = l[i]; j <= r[i]; j++) p[j] = mx;
-      cout << mx << '\n';
+      ll l, r;
+      cin >> l >> r;
+      l--;
+      ll x = seg.prod(l, r);
+      seg.apply(l, r, x+1);
+      cout << x+1 << '\n';
    }
 
    return 0;
