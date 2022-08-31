@@ -1,21 +1,26 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
+ll f(ll x) {
+   return x*x*x*x*x;
+}
+
 int main(void){
-   int a, b, c;
-   cin >> a >> b >> c;
-   vector dp(101, vector(101, vector<double>(101, 0)));
-   for(int i = 99; i >= 0; i--) {
-      for(int j = 99; j >= 0; j--) {
-         for(int k = 99; k >= 0; k--) {
-            dp[i][j][k] += dp[i+1][j][k] * i / (i+j+k);
-            dp[i][j][k] += dp[i][j+1][k] * j / (i+j+k);
-            dp[i][j][k] += dp[i][j][k+1] * k / (i+j+k) + 1;
+   ll x;
+   cin >> x;
+   REP(a,-6200,6200) {
+      ll ok = -6201, ng = 6201;
+      while(abs(ng-ok) > 1) {
+         ll b = (ok+ng)/2;
+         if(-f(b) == x - f(a)) {
+            cout << a << ' ' << b << '\n';
+            return 0;
          }
+         if(-f(b) < x - f(a)) ng = b;
+         else ok = b;
       }
    }
 
-   cout << dp[a][b][c] << '\n';
    return 0;
 }
 

@@ -1,21 +1,33 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
+const int mod = 2019;
+
 int main(void){
-   int a, b, c;
-   cin >> a >> b >> c;
-   vector dp(101, vector(101, vector<double>(101, 0)));
-   for(int i = 99; i >= 0; i--) {
-      for(int j = 99; j >= 0; j--) {
-         for(int k = 99; k >= 0; k--) {
-            dp[i][j][k] += dp[i+1][j][k] * i / (i+j+k);
-            dp[i][j][k] += dp[i][j+1][k] * j / (i+j+k);
-            dp[i][j][k] += dp[i][j][k+1] * k / (i+j+k) + 1;
-         }
-      }
+   string s;
+   cin >> s;
+
+   reverse(s.begin(), s.end());
+   int t = 1, sz = s.size();
+   vector<int> v(sz);
+   rep(i,sz) {
+      if(i > 0) t *= 10;
+      t %= mod;
+      v[i] = (s[i]-'0')*t;
+      v[i] %= mod;
    }
 
-   cout << dp[a][b][c] << '\n';
+   ll ans = 0;
+   vector<int> sum(sz+1), cnt(2019);
+   cnt[0] = 1;
+   rep(i,sz) {
+      sum[i+1] = sum[i]+v[i];
+      sum[i+1] %= mod;
+      ans += cnt[sum[i+1]];
+      cnt[sum[i+1]]++;
+   }
+
+   cout << ans << '\n';
    return 0;
 }
 

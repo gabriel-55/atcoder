@@ -1,25 +1,23 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
-const ll mod = 998244353;
+const int mod = 998244353;
 
 int main(void){
-   ll n, k;
+   int n, k;
    cin >> n >> k;
-
-   vector<ll> l(k), r(k);
+   vector<int> l(k), r(k);
    rep(i,k) cin >> l[i] >> r[i];
-
-   vector<ll> dp(n), a(n);
+   vector<ll> dp(n), d(n);
    dp[0] = 1;
-   ll ch = 0;
-   rep(i,n) {
-      ch += a[i];
-      dp[i] += ch;
+   ll cnt = 0;
+   rep(i,n){
+      cnt += d[i];
+      dp[i] += cnt;
       dp[i] %= mod;
-      rep(j,k) { 
-         if(i+l[j] < n) a[i+l[j]] += dp[i];
-         if(i+r[j]+1 < n) a[i+r[j]+1] -= dp[i];
+      rep(j,k) {
+         if(i+l[j] < n) d[i+l[j]] += dp[i];
+         if(i+r[j]+1 < n) d[i+r[j]+1] -= dp[i];
       }
    }
 
