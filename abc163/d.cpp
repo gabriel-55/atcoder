@@ -6,12 +6,11 @@ const ll mod = 1e9+7;
 int main(void){
    ll n, k;
    cin >> n >> k;
-   ll ans = 0, now = n, diff = 0;
-   if(k <= 1) ans += n+1;
-   for(ll i = 2; i <= n+1; i++) {
-      now += (n-i+1);
+   ll ans = 0, cnt = 0, diff = 0;
+   for(ll i = 1; i <= n+1; i++) {
+      cnt += n-i+1;
       diff += i-1;
-      if(i >= k) ans += now-diff+1;
+      if(i >= k) ans += cnt-diff+1;
       ans %= mod;
    }
 
