@@ -2,46 +2,45 @@
 #include __FILE__
 
 int main(void){
-   ll h, w, a, b;
+   int h, w, a, b;
    cin >> h >> w >> a >> b;
    
    ll ans = 0;
-   vector used(h, vector<bool>(w, false));
-   auto dfs = [&](auto dfs, ll x, ll y) -> void {
-      if(b < 0 || a < 0) return;
-      if(y == w) {
-         x++;
+   vector ng(h, vector<bool>(w, false));
+   
+   auto dfs = [&](auto dfs, int x, int y) -> void {
+      if(a < 0 || b < 0) return;
+      if(y >= w) {
          y = 0;
-      }
-      if(x == h) {
-         ans++;
-         return;
-      }
-      
-      if(used[x][y]) {
-         dfs(dfs, x, y+1);
-         return;
+         x = x+1;
+         if(x >= h) {
+            ans++;
+            return;
+         }
       }
 
-      used[x][y] = true;;
-      b--;
-      dfs(dfs, x, y+1);
-      b++;
-      
-      a--;
-      if(x+1 < h && !used[x+1][y]) {
-         used[x+1][y] = true;
-         dfs(dfs, x, y+1);
-         used[x+1][y] = false;
-      }
-      if(y+1 < w && !used[x][y+1]) {
-         used[x][y+1] = true;
-         dfs(dfs, x, y+1);
-         used[x][y+1] = false;
-      }
-      a++;
-      used[x][y] = false;
-      return;
+      if(!ng[x][y]) {
+         ng[x][y] = true;
+
+            b--;
+            dfs(dfs, x, y+1);
+            b++;
+
+            a--;
+            if(x+1 < h && !ng[x+1][y]) {
+               ng[x+1][y] = true;
+               dfs(dfs, x, y+1);
+               ng[x+1][y] = false;
+            }
+            if(y+1 < w && !ng[x][y+1]) {
+               ng[x][y+1] = true;
+               dfs(dfs, x, y+1);
+               ng[x][y+1] = false;
+            }
+            a++;
+
+         ng[x][y] = false;
+      } else dfs(dfs, x, y+1);
    };
 
    dfs(dfs, 0, 0);
