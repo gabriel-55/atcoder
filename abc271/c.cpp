@@ -4,40 +4,23 @@
 int main(void){
    ll n;
    cin >> n;
-   vector<ll> a(n);
-   rep(i,n) cin >> a[i];
-   sort(a.begin(),a.end());
-   deque<ll> dq;
-   ll r = 0;
+   set<ll> st;
    rep(i,n) {
-      if(!dq.empty() && a[i] == dq.back()) {
-         r++;
-         continue;
-      }
-      dq.push_back(a[i]);
-   }
-   rep(i,r) dq.push_back(inf);
-
-   ll ans = 0, cnt = 1;
-   while(dq.size() >= 2) {
-      if(dq.front() < cnt) {
-         dq.pop_front();
-         dq.push_back(inf);
-         continue;
-      }
-      if(dq.front() > cnt) {
-         rep(i,2) dq.pop_back();
-      } else {
-         dq.pop_front();
-      }
-
-      cnt++;
-      ans++;
-      debug(dq, ans);
+      ll a;
+      cin >> a;
+      st.insert(a);
    }
 
-   if(dq.size() && dq.front() == cnt) ans++;
-   cout << ans << '\n';
+   ll ok = 0, ng = 1e6;
+   debug(st);
+   while(abs(ok - ng) > 1) {
+      ll m = (ok + ng) / 2;
+      ll x = distance(st.begin(), st.lower_bound(m+1));
+      if((n-x)/2+x >= m) ok = m;
+      else ng = m;
+   }
+
+   cout << ok << '\n';
    return 0;
 }
 
