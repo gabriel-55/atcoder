@@ -5,23 +5,27 @@ int main(void){
    ll w, n, k;
    cin >> w >> n >> k;
    vector<ll> a(n), b(n);
-   rep(i,n) cin >> a[i] >> b[i];
-
-   vector dp(k+1, vector<ll>(w+1, -1));
-   dp[0][0] = 0;
    rep(i,n) {
-      vector p(k+1, vector<ll>(w+1, -1));
+      cin >> a[i] >> b[i];
+   }
+   ll ans = 0;
+   vector dp(k+1, vector<ll>(w+1, -inf));
+   dp[0][0] = 0;
+   rep(x,n) {
+      vector p(k+1, vector<ll>(w+1, -inf));
       swap(dp, p);
-
-      rep(j,k+1) rep(l,w+1) {
-         if(p[j][l] == -1) continue;
-         chmax(dp[j][l], p[j][l]);
-         if(j+1 <= k && l+a[i] <= w) chmax(dp[j+1][l+a[i]], p[j][l]+b[i]);
+      rep(i,k+1) rep(j,w+1) {
+         chmax(dp[i][j], p[i][j]);
+         if(p[i][j] == -inf) continue;
+         if (j+a[x] <= w && i+1 <= k) {
+            chmax(dp[i+1][j+a[x]], p[i][j]+b[x]);
+            chmax(ans, dp[i+1][j+a[x]]);
+         }
       }
    }
 
-   ll ans = 0;
-   rep(i,k+1) rep(j,w+1) chmax(ans, dp[i][j]);
+   debug(dp);
+
    cout << ans << '\n';
    return 0;
 }
