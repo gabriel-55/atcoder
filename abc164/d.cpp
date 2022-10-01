@@ -1,34 +1,27 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
-const int mod = 2019;
+const ll mod = 2019;
 
 int main(void){
    string s;
    cin >> s;
-
+   ll ans = 0, sum = 0, t = 1;
    reverse(s.begin(), s.end());
-   int t = 1, sz = s.size();
-   vector<int> v(sz);
-   rep(i,sz) {
-      if(i > 0) t *= 10;
+   vector<ll> cnt(mod, 0);
+   rep(i,s.size()){
+      sum += t*(s[i]-'0');
+      sum %= mod;
+      t *= 10;
       t %= mod;
-      v[i] = (s[i]-'0')*t;
-      v[i] %= mod;
-   }
-
-   ll ans = 0;
-   vector<int> sum(sz+1), cnt(2019);
-   cnt[0] = 1;
-   rep(i,sz) {
-      sum[i+1] = sum[i]+v[i];
-      sum[i+1] %= mod;
-      ans += cnt[sum[i+1]];
-      cnt[sum[i+1]]++;
+      ans += cnt[sum];
+      if(sum == 0) ans++;
+      cnt[sum]++;
    }
 
    cout << ans << '\n';
    return 0;
+
 }
 
 /*---------------------------------------------------------------------------------------------------
