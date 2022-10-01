@@ -1,34 +1,41 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
-int const mod = 1e9 + 7;
+const ll m = 13, mod = 1e9+7;
 
 int main(void){
    string s;
    cin >> s;
 
    reverse(s.begin(), s.end());
-   vector<int> dp(13, 0);
+   vector<ll> dp(m, 0);
    dp[0] = 1;
-   int cnt = 1;
-   rep(i,s.size()) {
-      vector<int> p(13, 0);
+   
+   ll t = 1;
+   rep(x,s.size()) {
+      vector<ll> p(m, 0);
       swap(dp, p);
-      if(i != 0) cnt *= 10;
-      cnt %= 13;
-      rep(j,13) {
-         if(s[i] != '?') {
-            dp[(j+cnt*(s[i]-'0'))%13] += p[j];
-            dp[(j+cnt*(s[i]-'0'))%13] %= mod;
-            continue;
+      
+      if(s[x] != '?') {
+         ll y = (s[x] - '0') * t;
+         rep(i,m) {
+            dp[(i+y)%m] += p[i];
+            dp[(i+y)%m] %= mod;
          }
-
-         rep(k,10) {
-            dp[(j+cnt*k)%13] += p[j];
-            dp[(j+cnt*k)%13] %= mod;
+      } else {
+         rep(i,10) {
+            ll y = i*t;
+            rep(j,m) {
+               dp[(j+y)%m] += p[j];
+               dp[(j+y)%m] %= mod;
+            }
          }
       }
+
+      t *= 10;
+      t %= m;
    }
+
 
    cout << dp[5] << '\n';
    return 0;

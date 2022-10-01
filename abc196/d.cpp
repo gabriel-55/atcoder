@@ -2,45 +2,50 @@
 #include __FILE__
 
 int main(void){
-   int h, w, a, b;
+   ll h, w, a, b;
    cin >> h >> w >> a >> b;
-   
+   vector c(h, vector<int>(w, 0));
    ll ans = 0;
-   vector ng(h, vector<bool>(w, false));
-   
-   auto dfs = [&](auto dfs, int x, int y) -> void {
+
+   auto dfs = [&](auto dfs, ll x, ll y) -> void {
       if(a < 0 || b < 0) return;
-      if(y >= w) {
-         y = 0;
-         x = x+1;
-         if(x >= h) {
-            ans++;
-            return;
-         }
+      if(x >= h) {
+         if(a == 0 && b == 0) ans++;
+         return;
       }
 
-      if(!ng[x][y]) {
-         ng[x][y] = true;
+      ll nx = x, ny = y+1;
+      if(ny >= w) {
+         nx = x+1;
+         ny = 0;
+      }
 
-            b--;
-            dfs(dfs, x, y+1);
-            b++;
+      if(c[x][y]) {
+         dfs(dfs, nx, ny);
+         return;
+      }
 
-            a--;
-            if(x+1 < h && !ng[x+1][y]) {
-               ng[x+1][y] = true;
-               dfs(dfs, x, y+1);
-               ng[x+1][y] = false;
-            }
-            if(y+1 < w && !ng[x][y+1]) {
-               ng[x][y+1] = true;
-               dfs(dfs, x, y+1);
-               ng[x][y+1] = false;
-            }
-            a++;
+      c[x][y] = 1;
 
-         ng[x][y] = false;
-      } else dfs(dfs, x, y+1);
+      b--;
+      dfs(dfs, nx, ny);
+      b++;
+
+      a--;
+      if(x+1 < h && !c[x+1][y]) {
+         c[x+1][y] = 1;
+         dfs(dfs, nx, ny);
+         c[x+1][y] = 0;
+      }
+
+      if(y+1 < w && !c[x][y+1]) {
+         c[x][y+1] = 1;
+         dfs(dfs, nx, ny);
+         c[x][y+1] = 0;
+      }
+      a++;
+
+      c[x][y] = 0;
    };
 
    dfs(dfs, 0, 0);
