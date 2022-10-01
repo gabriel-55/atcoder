@@ -4,18 +4,19 @@
 int main(void){
    ll n;
    cin >> n;
-   vector<ll> cnt(2e5+1, 0);
-   rep(i,n) {
+   vector<ll> cnt(2e5);
+   rep(i,n){
       ll a;
       cin >> a;
-      cnt[a]++;
+      cnt[--a]++;
    }
 
+   vector<ll> s(2e5+1);
+   rep(i,2e5) s[i+1] = s[i] + cnt[i];
+   
    ll ans = 0;
-   for(ll i = 1; i <= 2e5; i++) for(ll j = i; j <= 2e5; j++) {
-      if(i*j > 2e5) break;
-      if(i != j) ans += 2*cnt[i]*cnt[j]*cnt[i*j];
-      else ans += cnt[i]*cnt[j]*cnt[i*j];
+   rep(i,2e5) {
+      ans += s[i]*cnt[i]*(s[2e5]-s[i+1]);
    }
 
    cout << ans << '\n';

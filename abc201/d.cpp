@@ -4,19 +4,19 @@
 int main(void){
    ll h, w;
    cin >> h >> w;
-   vector v(h, vector<ll>(w));
+   vector c(h, vector<int>(w));
    rep(i,h) rep(j,w) {
-      char c;
-      cin >> c;
-      if(c == '+') v[i][j] = 1;
-      else v[i][j] = -1;
+      char x;
+      cin >> x;
+      if(x == '+') c[i][j] = 1;
+      else c[i][j] = -1;
    }
 
    vector dp(h, vector<ll>(w, -inf));
    dp[h-1][w-1] = 0;
    for(ll i = h-1; i >= 0; i--) for(ll j = w-1; j >= 0; j--) {
-      if(i+1 < h) dp[i][j] = max(dp[i][j], -1*(dp[i+1][j]-v[i+1][j]));
-      if(j+1 < w) dp[i][j] = max(dp[i][j], -1*(dp[i][j+1]-v[i][j+1]));
+      if(i+1 < h) chmax(dp[i][j], -1*(dp[i+1][j]-c[i+1][j]));
+      if(j+1 < w) chmax(dp[i][j], -1*(dp[i][j+1]-c[i][j+1]));
    }
 
    if(dp[0][0] == 0) cout << "Draw" << '\n';
