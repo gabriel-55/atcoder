@@ -1,25 +1,15 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
+ll f(ll x) {
+   if(x == 0) return 1;
+   else return x*f(x-1);
+}
+
 int main(void){
    ll n;
    cin >> n;
-   vector<ll> a(n);
-   rep(i,n) cin >> a[i];
-
-   vector<ll> dp(21, 0);
-   dp[a[0]] = 1;
-   REP(ni,1,n-1) {
-      vector<ll> p(21, 0);
-      swap(dp, p);
-      rep(i,21) {
-         if(i+a[ni] <= 20 && i+a[ni] >= 0) dp[i+a[ni]] += p[i];
-         if(i-a[ni] <= 20 && i-a[ni] >= 0) dp[i-a[ni]] += p[i];
-      }
-   }
-
-   cout << dp[a[n-1]] << '\n';
-   return 0;
+   cout << f(n) << '\n';
 }
 
 /*---------------------------------------------------------------------------------------------------
