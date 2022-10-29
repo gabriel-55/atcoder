@@ -2,15 +2,18 @@
 #include __FILE__
 
 int main(void){
-   int a, b, c;
+   ll a, b, c;
    cin >> a >> b >> c;
-   vector dp(101, vector(101, vector<double>(101, 0)));
+
+   vector dp(101, vector<vector<double>>(101, vector<double>(101, 0)));
    for(int i = 99; i >= 0; i--) {
       for(int j = 99; j >= 0; j--) {
          for(int k = 99; k >= 0; k--) {
+            if(i+j+k == 0) continue;
             dp[i][j][k] += dp[i+1][j][k] * i / (i+j+k);
             dp[i][j][k] += dp[i][j+1][k] * j / (i+j+k);
-            dp[i][j][k] += dp[i][j][k+1] * k / (i+j+k) + 1;
+            dp[i][j][k] += dp[i][j][k+1] * k / (i+j+k);
+            dp[i][j][k] += 1;
          }
       }
    }
