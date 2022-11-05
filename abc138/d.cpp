@@ -2,33 +2,35 @@
 #include __FILE__
 
 int main(void){
-   ll n, x, y;
-   cin >> n >> x >> y;
-
-   vector<ll> a(n);
-   rep(i,n) cin >> a[i];
-   set<ll> dpx, dpy;
-   dpx.insert(a[0]), dpy.insert(0);
-
-   REP(i,1,n) {
-      set<ll> ndp;
-      if(i%2 != 0) {
-         swap(ndp, dpy);
-         for(auto &ny : ndp) {
-            dpy.insert(ny+a[i]);
-            dpy.insert(ny-a[i]);
-         } 
-      } else {
-         swap(ndp, dpx);
-         for(auto &nx : ndp) {
-            dpx.insert(nx+a[i]);
-            dpx.insert(nx-a[i]);
-         }
-      }
+   ll n, q;
+   cin >> n >> q;
+   vector g(n, vector<ll>());
+   rep(i,n-1) {
+      ll a, b;
+      cin >> a >> b;
+      g[--a].emplace_back(--b);
+      g[b].emplace_back(a);
    }
 
-   if(dpx.count(x) && dpy.count(y)) cout << "Yes" << '\n';
-   else cout << "No" << '\n';
+   vector<ll> cnt(n, 0);
+   rep(i,q) {
+      ll p, x;
+      cin >> p >> x;
+      cnt[--p] += x;
+   }
+   auto dfs = [&](auto dfs, ll x, ll pre) -> void {
+      for(auto &nx : g[x]) {
+         if(nx == pre) continue;
+         cnt[nx] += cnt[x];
+         dfs(dfs, nx, x);
+      }
+   };
+
+   dfs(dfs, 0, -1);
+   rep(i,n) {
+      cout << cnt[i] << ' ';
+   }
+   return 0;
 }
 
 /*---------------------------------------------------------------------------------------------------
