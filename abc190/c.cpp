@@ -2,11 +2,35 @@
 #include __FILE__
 
 int main(void){
-   ll n;
-   cin >> n;
-   vector<ll> v(n);
-   rep(i,n) cin >> v[i];
-   ll ans = accumulate(v.begin(), v.end(), 0LL);
+   ll n, m;
+   cin >> n >> m;
+   vector<ll> a(m), b(m);
+   rep(i,m) {
+      cin >> a[i] >> b[i];
+      a[i]--; b[i]--;
+   }
+   ll k;
+   cin >> k;
+   vector<ll> c(k), d(k);
+   rep(i,k) {
+      cin >> c[i] >> d[i];
+      c[i]--; d[i]--;
+   }
+
+   ll ans = 0;
+   rep(bit,1<<k) {
+      vector<ll> v(n, 0);
+      rep(i,k) {
+         if(bit>>i&1) v[c[i]]++;
+         else v[d[i]]++;
+      }
+      ll cnt = 0;
+      rep(i,m) {
+         if(v[a[i]] && v[b[i]]) cnt++;
+      }
+      chmax(ans, cnt);
+   }
+
    cout << ans << '\n';
    return 0;
 }
