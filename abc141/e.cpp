@@ -7,11 +7,11 @@ int main(void){
    cin >> n >> s;
    ll ans = 0;
    rep(i,n) {
-      string t = s.substr(i);
-      auto z = z_algorithm(t);
-      m_99(j,1,z.size()) chmax(ans, min(j, (ll)z[j]));
+      vector<int> v = z_algorithm(s);
+      rep(j,v.size()) chmax(ans, min(j, (ll)v[j]));
+      if(i != n-1) s = s.substr(1);
    }
-   cout << ans << endl;
+   cout << ans << '\n';
 }
 
 /*---------------------------------------------------------------------------------------------------

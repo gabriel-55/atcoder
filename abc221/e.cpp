@@ -2,27 +2,49 @@
 #include __FILE__
 
 using mint = modint998244353;
+using S = mint;
+S op(S a, S b) {
+   return a+b;
+}
+S e(){
+   return 0;
+}
 
 int main(void){
-   ll n, m, k;
-   cin >> n >> m >> k;
-   const mint minv = mint(1)/m;
-   mint ans = 0;
-   vector<mint> dp(n+1, 0);
-   dp[0] = 1;
-   rep(x,k) {
-      vector<mint> p(n+1, 0);
-      swap(dp, p);
-      rep(i,n) m_99(j,1,m+1) {
-         ll nx = i+j;
-         if(nx >= n) {
-            nx = nx - n;
-            nx = n - nx;
-         }
-         dp[nx] += p[i]*minv;
-      }
-      ans += dp[n];
+   ll n;
+   cin >> n;
+   map<ll, ll> comp;
+   ll now = 1;
+   vector<ll> a(n), b(n);
+   segtree<S, op, e> seg(n);
+   mint p = 1, p2 = 1;
+   const mint div = mint(1)/2;
+
+   rep(i,n) {
+      cin >> a[i];
+      b[i] = a[i];
    }
+   sort(b.begin(), b.end());
+   rep(i,n) {
+      if(comp[b[i]] == 0) {
+         comp[b[i]] = now;
+         now++;
+      }
+   }
+
+   mint ans = 0;
+   rep(i,n){
+      a[i] = comp[a[i]]-1;
+      mint cnt = seg.prod(0, a[i]+1);
+      if(n){
+         cnt *= p2;
+         p2 *= 2;
+      }
+      ans += cnt;
+      if(n) p *= div;
+      seg.set(a[i], seg.get(a[i])+p);
+   }
+
    cout << ans.val() << '\n';
 }
 

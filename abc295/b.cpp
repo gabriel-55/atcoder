@@ -1,29 +1,32 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
-using mint = modint998244353;
-
 int main(void){
-   ll n, m, k;
-   cin >> n >> m >> k;
-   const mint minv = mint(1)/m;
-   mint ans = 0;
-   vector<mint> dp(n+1, 0);
-   dp[0] = 1;
-   rep(x,k) {
-      vector<mint> p(n+1, 0);
-      swap(dp, p);
-      rep(i,n) m_99(j,1,m+1) {
-         ll nx = i+j;
-         if(nx >= n) {
-            nx = nx - n;
-            nx = n - nx;
-         }
-         dp[nx] += p[i]*minv;
+   ll h, w;
+   cin >> h >> w;
+   vector<string> v(h);
+   rep(i,h) cin >> v[i];
+   queue<pair<ll, P>> que;
+   rep(i,h) rep(j,w) {
+      if(v[i][j] != '.' && v[i][j] != '#') {
+         que.push({v[i][j]-'0', {i, j}});
       }
-      ans += dp[n];
    }
-   cout << ans.val() << '\n';
+   
+   debug(que);
+   while(!que.empty()){
+      auto goal = que.front().fi;
+      auto [x, y] = que.front().se;
+      que.pop();
+      debug(goal, x, y);
+      rep(i,h) rep(j,w) {
+         if(abs(x-i)+abs(y-j) <= goal) v[i][j] = '.';
+      }
+   }
+   rep(i,h) {
+      rep(j,w) cout << v[i][j];
+      cout << '\n';
+   }
 }
 
 /*---------------------------------------------------------------------------------------------------
@@ -42,8 +45,8 @@ int main(void){
 #else
 #include <bits/stdc++.h>
 using namespace std;
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 using ll = long long;
 using ull = unsigned long long;
 using ldb = long double;

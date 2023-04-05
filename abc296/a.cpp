@@ -1,29 +1,17 @@
 #if !__INCLUDE_LEVEL__
 #include __FILE__
 
-using mint = modint998244353;
-
 int main(void){
-   ll n, m, k;
-   cin >> n >> m >> k;
-   const mint minv = mint(1)/m;
-   mint ans = 0;
-   vector<mint> dp(n+1, 0);
-   dp[0] = 1;
-   rep(x,k) {
-      vector<mint> p(n+1, 0);
-      swap(dp, p);
-      rep(i,n) m_99(j,1,m+1) {
-         ll nx = i+j;
-         if(nx >= n) {
-            nx = nx - n;
-            nx = n - nx;
-         }
-         dp[nx] += p[i]*minv;
-      }
-      ans += dp[n];
+   ll n;
+   cin >> n;
+   string s;
+   cin >> s;
+   bool ok = true;
+   m_99(i,1,n) {
+      if(s[i] == s[i-1]) ok = false;
    }
-   cout << ans.val() << '\n';
+   if(ok) puts("Yes");
+   else puts("No");
 }
 
 /*---------------------------------------------------------------------------------------------------
@@ -42,8 +30,8 @@ int main(void){
 #else
 #include <bits/stdc++.h>
 using namespace std;
-#include <atcoder/all>
-using namespace atcoder;
+// #include <atcoder/all>
+// using namespace atcoder;
 using ll = long long;
 using ull = unsigned long long;
 using ldb = long double;

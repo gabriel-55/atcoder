@@ -6,24 +6,27 @@ using mint = modint998244353;
 int main(void){
    ll n, m, k;
    cin >> n >> m >> k;
-   const mint minv = mint(1)/m;
-   mint ans = 0;
-   vector<mint> dp(n+1, 0);
+   vector g(n, vector<ll>());
+   rep(i,m) {
+      ll u, v;
+      cin >> u >> v;
+      u--; v--;
+      g[u].emplace_back(v);
+      g[v].emplace_back(u);
+   }
+   vector<mint> dp(n);
    dp[0] = 1;
    rep(x,k) {
-      vector<mint> p(n+1, 0);
+      mint sum = 0;
+      rep(i,n) sum += dp[i];
+      vector<mint> p(n);
       swap(dp, p);
-      rep(i,n) m_99(j,1,m+1) {
-         ll nx = i+j;
-         if(nx >= n) {
-            nx = nx - n;
-            nx = n - nx;
-         }
-         dp[nx] += p[i]*minv;
+      rep(i,n) {
+         dp[i] = sum-p[i];
+         for(auto &nx : g[i]) dp[i] -= p[nx];
       }
-      ans += dp[n];
    }
-   cout << ans.val() << '\n';
+   cout << dp[0].val() << '\n';
 }
 
 /*---------------------------------------------------------------------------------------------------
